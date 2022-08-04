@@ -6,6 +6,7 @@ import (
     "strconv"
 
     "gofiber/crud/config"
+    "gofiber/crud/internal/model"
     "gorm.io/driver/mysql"
     "gorm.io/gorm"
 )
@@ -27,6 +28,7 @@ func ConnectDB() {
 
     // Connection URL to connect to Postgres Database
     dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local", config.Config("DB_USER"), config.Config("DB_PASSWORD"), config.Config("DB_HOST"), port, config.Config("DB_NAME"))
+
     // Connect to the DB and initialize the DB variable
     DB, err = gorm.Open(mysql.Open(dsn))
 
@@ -35,4 +37,8 @@ func ConnectDB() {
     }
 
     fmt.Println("Connection Opened to Database")
+
+		// migrate database
+		DB.AutoMigrate(&model.Employee{})
+		fmt.Println("Database Migrated")
 }
