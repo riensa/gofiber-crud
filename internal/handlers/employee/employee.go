@@ -29,6 +29,14 @@ func CreateEmployees(c *fiber.Ctx) error {
   return c.JSON(fiber.Map{"status": "success", "message": "Created Employee", "data": employee})
 }
 
+// ReadEmployees godoc
+// @Summary List all employees.
+// @Description List all employees.
+// @Tags root
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Router / [get]
 func ReadEmployees(c *fiber.Ctx) error {
 	db := database.DB
 	var employees []model.Employee
@@ -47,9 +55,6 @@ func ReadEmployees(c *fiber.Ctx) error {
 
 		limit = lmt
 	}
-
-	fmt.Println("offset", offset)
-	fmt.Println("limit", limit)
 
 	// find all employees in the database
 	db.Offset(offset).Limit(limit).Find(&employees)
